@@ -14,7 +14,7 @@ data("accidents")
 accidents
 ```
 
-```{r label-me-1}
+```{r label-me-2}
 install.packages("dplyr")
 library(dplyr)
 accidents <- accidents %>%
@@ -23,7 +23,7 @@ column_names <- names(accidents)
 print(column_names)
 ```
 
-```{r label-me-1}
+```{r label-me-3}
   library(ggplot2)
   #ggplot(accidents,mapping=aes(x=time,fill=severity))+
     #geom_density(alpha=0.5)+
@@ -33,20 +33,29 @@ print(column_names)
    geom_density(alpha = 0.5) +
    #labs(title = "Weekdays", x = "Time of the day", y = "Density") +
    labs(title = "Number of accidents throughout the day\nBy day of week and severity",x="Time of the day", y="Density")+
+    theme_minimal()+
       scale_fill_manual(values = setNames(severity_colors, unique(accidents$severity))) +
    facet_wrap(~weekday_indicator, ncol = 1)  # Display weekday plot
 ```
 Interpreting the data:
 
-Incidents of a minor kind: It is clear that on weekdays and weekends, the majority of the incidents of a minor nature happened between 2 and 5 o'clock.  
-Fatal Accidents: The weekdays saw the most fatal accidents, with the peak period falling between 10AM and 2PM. There were no fatal accidents on the weekends.
-dangerous Accidents: Between 5 and 7 PM, there occur the most dangerous accidents.
+Minor accidents: We can observe that the majority of the minor accidents occurred between 2PM and 5PM on both weekdays and weekends.  
 
-On both weekends and weekdays, minor accidents are the most likely to happen out of the three.
+Fatal Accidents: There were no fatal accidents over the weekend, and those that happened throughout the week were most common between 10 a.m. and 2 p.m.
+
+Serious Accidents: The most serious accidents occur between 5 and 7 p.m.
+
+On both weekends and weekdays, minor accidents are more probable than major accidents.
+
+
+#Why density plot is used?
+Multiple variables (time, day, severity) are combined into a single, useful plot.
+Clearly highlights patterns and peak accident times, assisting in data comprehension.
+Allows for simple comparisons, making it a useful tool for recognizing trends and guiding safety measures.
 
 ## 2 - NYC marathon winners
 
-```{r label-me-2}
+```{r label-me-4}
 
 library(openintro)
 data("nyc_marathon")  
@@ -77,7 +86,7 @@ The histogram can display the data's real distribution, allowing you to see mode
 Features Visible in the Box Plot but Missing from the Histogram:
 Central Tendency and Spread: The box plot provides a clear representation of the central tendency and spread of the data by clearly displaying the median and the interquartile range.Box plots are great for highlighting outliers that may not be as obvious in a histogram.
 
-```{r label-me-2}
+```{r label-me-5}
 library(ggplot2)
 
 # side-by-side box plots
@@ -90,22 +99,24 @@ ggplot(nyc_marathon, aes(division,time_hrs, fill=division)) +
 ```
 First off, women take significantly longer on average to finish the marathon than do men, demonstrating a higher central tendency in women's marathon finishing times. Furthermore, compared to males, women have a wider interquartile range, indicating a wider range of completion times centered around the median and likely indicating a wider range of performances within the women's group. Both groups are clearly evident among outliers, which are runners that have unusually fast or slow times. In contrast to the women's group, which has eight outliers spread more widely across the range, the men's group has seven outliers clustered at the upper end of the time distribution.This dispersion in the women’s group may imply a wider variance in the extremes of performance, with some runners completing the marathon substantially faster or slower than the majority.
 
-```{r label-me-2}
+```{r label-me-6}
 # Create side-by-side box plots without fill color to avoid redundancy
 ggplot(nyc_marathon, aes(division,time_hrs)) +
   geom_boxplot() +
+  scale_fill_manual(values=c("Men" = rgb(0.2,0.8,0.5,1), "Women" = rgb(0.8,0.4,0.5,1)))+
   labs(title="Distribution of Marathon Times by Gender", x="Division", y="Marathon Time (hours)") +
   theme_minimal()
 ```
-We used various colors to symbolize the 'Men' and 'Women' divisions in the plot we made for component (b), and we added a legend to show which color represented either category. The x-axis labels ('Men' and 'Women') already make it apparent which box plot belongs to which group, hence the legend and color coding are unnecessary in this visualization.In portion (c), we took away the legend and color fill to concentrate just on the box plots' depiction of the distribution of marathon times.
+We used distinct colors to symbolize the 'Men' and 'Women' divisions in the plot developed for section (b), which incorporated a legend to indicate which color represented which category. However, because the x-axis labels ('Men' and 'Women') clearly identify which box plot corresponds to which group, the legend is unnecessary in this depiction.We omitted the legend in portion (c), focusing exclusively on the distribution of marathon times as shown by the box plots.
 
-```{r label-me-2}
+
+```{r label-me-7}
 library(ggplot2)
 
 ggplot(nyc_marathon, aes(x=year, y=time_hrs, color=division, shape=division)) +
  geom_point() +
   geom_line() +
-  scale_color_manual(values = c("Men" = "red", "Women" = "yellow")) +
+  scale_color_manual(values = c("Men" = rgb(0.2,0.8,0.5,1), "Women" = rgb(0.8,0.4,0.5,1))) +
   scale_shape_manual(values = c("Men" = 19, "Women" = 17)) +
   labs(title = "Marathon Times of Men and Women Over the Years", x = "Year", y = "Marathon Time (hours)") +
   theme_minimal()
@@ -116,14 +127,14 @@ ggplot(nyc_marathon, aes(x=year, y=time_hrs, color=division, shape=division)) +
 3. Unlike box plots, which summarize data distribution in a condensed manner, each point on the plot represents a single observation (a particular marathon time in a particular year), enabling a more detailed perspective of the data.
 
 ## 3 - US counties
-```{r label-me-3}
+```{r label-me-8}
 install.packages("openintro")
 library(openintro)
 data("county")
 county
 ```
 
-```{r label-me-3}
+```{r label-me-9}
 #a. What does the following code do? Does it work? Does it make sense? Why/why not?
 ggplot(county) +
   geom_point(aes(x = median_edu, y = median_hh_income)) +
@@ -132,7 +143,7 @@ ggplot(county) +
 #answer -> Use a scatterplot to show the connections between different variables. Use a boxplot to display the distribution of a variable across categories. The combination of them in this code might not produce useful outcomes and doesnt align well with the data so makes no sense
 ```
 
-```{r label-me-3}
+```{r label-me-10}
 #b. Which of the following two plots makes it easier to compare poverty levels (poverty) across people from different median education levels (median_edu)? What does this say about when to place a faceting variable across rows or columns?
 ggplot(county %>% filter(!is.na(median_edu))) + 
   geom_point(aes(x = homeownership, y = poverty)) + 
@@ -145,63 +156,66 @@ ggplot(county %>% filter(!is.na(median_edu))) +
 #answer-->In the case above its easier to compare the poverty levels across the people from different median education levels in the second graph/plot where median education levels are placed along the columns ,this arrangement is easier as comapre to the first one because we can easily scan down a single column to compare poverty levels across different education levels. so placing median_edu along the columns is easier  
 ```
 
-```{r label-me-3}
-ggplot(county,mapping=aes(homeownership,poverty))+
+```{r label-me-11}
+A<- ggplot(county,mapping=aes(homeownership,poverty))+
   geom_point()+
   labs(title = "Plot A")
 ```
 
-```{r label-me-3}
-ggplot(county,mapping=aes(homeownership,poverty))+
+```{r label-me-12}
+B<-ggplot(county,mapping=aes(homeownership,poverty))+
   geom_point()+
   geom_smooth(method = "loess",se=FALSE)+
   labs(title = "Plot B")
 ```
 
-```{r label-me-3}
-ggplot(county, aes(homeownership,poverty)) +
+```{r label-me-13}
+C<-ggplot(county, aes(homeownership,poverty)) +
   geom_point()+
   geom_smooth(method = "gam",mapping = aes(group = metro),color = "green", se = FALSE) +
   labs(title = "Plot C")
 ```
 
-```{r label-me-3}
-ggplot(county, aes(homeownership,poverty)) +
+```{r label-me-14}
+D<-ggplot(county, aes(homeownership,poverty)) +
   geom_smooth(mapping = aes(group = metro), se = FALSE) +
   geom_point()+
   labs(title = "Plot D")
 ```
 
-```{r label-me-3}
-ggplot(county, aes(homeownership,poverty)) +
+```{r label-me-15}
+E<-ggplot(county, aes(homeownership,poverty)) +
   geom_point(aes(color = metro)) +
   geom_smooth(se = FALSE, aes(linetype = metro, group = metro))+
   labs(title = "Plot E")
 ```
 
-```{r label-me-3}
-ggplot(county, aes(homeownership,poverty, colour = metro)) +
+```{r label-me-16}
+F<-ggplot(county, aes(homeownership,poverty, colour = metro)) +
   geom_point() +
   geom_smooth(se = FALSE) +
   labs(title = "Plot F")
 ```
 
-```{r label-me-3}
-ggplot(county, aes(homeownership, poverty)) +
+```{r label-me-17}
+G<-ggplot(county, aes(homeownership, poverty)) +
   geom_point(aes(color = metro)) +
   geom_smooth(method = "loess", se = FALSE) +
   labs(title = "Plot G")
 
 ```
 
-```{r label-me-3}
-ggplot(county,mapping=aes(homeownership,poverty))+
+```{r label-me-18}
+H<-ggplot(county,mapping=aes(homeownership,poverty))+
   geom_point(aes(color = metro))+
   
   labs(title = "Plot H")
+grid.arrange(A, B, C, D, nrow = 2) 
+grid.arrange( E, F, G, H, nrow = 2) 
+
 ```
 ## 4 - Rental apartments in SF
-```{r label-me-4}
+```{r label-me-19}
 library(ggplot2)
 library(dplyr)
 library(tidytuesdayR)
@@ -216,7 +230,8 @@ sf_data <- data %>%
   group_by(year, nhood) %>% 
   summarize(price_per_bed = mean(price_per_bed, na.rm = TRUE), .groups = 'drop')
 
-# Data Visualization
+max_price_per_bed <- max(sf_data$price_per_bed, na.rm = TRUE)
+
 ggplot(sf_data, aes(x = year, y = price_per_bed, color = nhood)) + 
   geom_line() +
   geom_point() +
@@ -232,54 +247,110 @@ Here are the key observations:
 - From 2011 to 2016, the rental market stabilized, with Downtown having the lowest rents and Alamo Square commanding the highest prices during this period.
 
 ## 5 - Napoleon’s march.
-```{r label-me-5}
-#I have borrowed the below code from git hub : https://gist.github.com/friendly/36e8d6643c35a23e9e445230eb266bd3
-library(grDevices)
+```{r label-me-20}
+#I borrowed this  code from below sources cited:
+#1.http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html
+#2. https://www.andrewheiss.com/blog/2017/08/10/exploring-minards-1812-plot-with-ggplot2/
 
+#Installing package
+install.packages("HistData")
+
+
+library(ggplot2)
+library(scales)        
+library(grid)          
+library(gridExtra)  
+library(dplyr) 
+
+#Getting troops data from HisData
 data(Minard.troops, package="HistData")
+
+#Getting cities data from HisData
 data(Minard.cities, package="HistData")
-data(Minard.temp, package="HistData")
- 
-require(ggplot2)
-require(scales)
-require(gridExtra)
 
-#' Define breaks variable
+#Plotting troops graph
 breaks <- c(1, 2, 3) * 10^5 
-
-plot_troops <- ggplot(Minard.troops, aes(long, lat)) +
+ggplot(Minard.troops, aes(long, lat)) +
         geom_path(aes(size = survivors, colour = direction, group = group),
-                 lineend = "round", linejoin = "round") +
-        scale_color_manual("March Direction", 
-                       values = c("yellow", "red"), 
+                  lineend="round") +
+   labs(title = "Napoleon’s march",
+       x = "Longitude",
+       y = "Latitude",
+       )+
+    scale_size("Survivors", range = c(1,10), #c(0.5, 15),
+               breaks=breaks, labels=scales::comma(breaks)) +
+    scale_color_manual("Direction", 
+                       values = c("darkgreen", "darkblue"), 
                        labels=c("Advance", "Retreat"))
+# Assigning the previous plot to plot_troops using last_plot()
+plot_troops <- last_plot()
 
-plot_cities <- geom_text(aes(label = city), size = 4, data = Minard.cities, color = "purple")
+# Plotting the cities data
 
-plot_minard <- plot_troops + plot_cities +
-        scale_size("Survivors Count", range = c(1, 10), 
-                    breaks = breaks, labels = scales::comma(breaks)) +
-        coord_cartesian(xlim = c(24, 38)) +
-        xlab(NULL) + 
-        ylab("Latitude") + 
-        ggtitle("Napoleon's March on Moscow: A Grim Journey") +
-        theme_minimal() +
-        theme(legend.position=c(.8, .2), legend.box="horizontal") +
-        annotate("text", x = 30, y = 55.5, label = "Significant Decrease in Survivors", color = "orange")
+# Using ggrepel to automatically move the labels away from points and to ensure none of the labels overlap.
+if (!require(ggrepel)) {install.packages("ggrepel"); require(ggrepel)}
+library(ggrepel)
+plot_troops +   
+    geom_point(data = Minard.cities) +
+    geom_text_repel(data = Minard.cities, aes(label = city))
 
-plot_temp <- ggplot(Minard.temp, aes(long, temp)) +
-        geom_path(color="pink", size=1.5) +
-        geom_point(size=2) +
-        geom_text(aes(label=date)) +
-        xlab("Longitude") + ylab("Temperature (°C)") +
-        coord_cartesian(xlim = c(24, 38)) + 
-        theme_minimal()
+#Assigning the previous plot to plot_troops_cities
+plot_troops_cities <- last_plot()
 
-# Adjust the windows dimensions (this line is specific to Windows, might not work in other environments)
-#windows(width=10, height=5)
 
-# Combine the two plots into one
-grid.arrange(plot_minard, plot_temp, nrow=2, heights=c(3,1))
+# Plotting the temperature data
+data(Minard.temp, package="HistData")
+
+Minard.temp <- Minard.temp %>%
+    mutate(label = paste0(temp, "° ", date))
+head(Minard.temp$label)
+
+ggplot(Minard.temp, aes(long, temp)) +
+    geom_path(color="grey", size=1.5) +
+    geom_point(size=1) +
+  labs(title = "Napoleon’s march",
+       x = "Longitude",
+       y = "Temperature",
+       )+
+  geom_text_repel(aes(label=label), size=2.5)
+plot_temp <- last_plot()
+
+# Arranging both the plots together
+grid.arrange(plot_troops_cities, plot_temp)
+
+# Fixing the cities plot by getting rid of ggplot2 theme elements, removing the legends, getting rid of x and y axis label scles, and setting the x axis limits to a range that will coincide with tjose for the plot of temperature.
+# Using coord_cartesian to set limit on x-axis
+
+plot_troops_cities +
+  coord_cartesian(xlim = c(24, 38)) +
+  labs(x = NULL, y = NULL) +
+  guides(color = FALSE, size = FALSE) +
+  theme_void()
+
+plot_troops_cities_fixed <- last_plot()  
+
+# # Fixing the troops plot
+# Using coord_cartesian to set limit on x-axis
+plot_temp + 
+  coord_cartesian(xlim = c(24, 38)) +
+  labs(x = NULL, y="Temperature") + 
+  theme_bw() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text.x = element_blank(), axis.ticks = element_blank(),
+        panel.border = element_blank())
+
+# Assigning the previous graph to plot_temp_fixed
+plot_temp_fixed <- last_plot()
+
+# Arranging the fixed plots together
+grid.arrange(plot_troops_cities_fixed, plot_temp_fixed, nrow=2, heights=c(3.5, 1.2))
+
+#grid.rect adds a border around entire graph
+grid.rect(width = .99, height = .99, gp = gpar(lwd = 2, col = "gray", fill = NA))
+
 ```
 Description :
-The code creates a visual representation of historical data in two parts. The first part shows troop movement, survival rates, and cities encountered, while the second part displays temperature changes. I improved clarity with color changes, annotations, and temperature values in Celsius, using a minimal theme for a clean look.
+The visualization is broken into two key sections: the first (plot_minard) depicts the troop's journey, including survivors and their direction of movement (advance or retreat), using different colors (blue and green) and line sizes to show the number of survivors. The cities they travelled through are marked on the map.
+The second section (plot_temp) illustrates the temperature changes that occurred during the campaign, with lines showing the temperature trend and dots denoting specific data entries with date comments. In the troop movement plot, I used dark green to represent the advancing forces and dark blue to represent the retreating troops. I identified the cities along their path for clarity, and the number of survivors is reflected by the thickness of the lines. To demonstrate the difficult weather conditions that the troops were subjected to, I drew a temperature trend plot beneath the troop movement. I've highlighted specific temperature measurements with annotated date labels in this section. For a unified appearance, I ensured that both graphs were properly aligned along the longitudinal axis. I deleted superfluous legends, axis labels, and grid lines to make the representation more concise. Finally, for a polished finish, I framed the entire image with a thin gray border.
