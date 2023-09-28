@@ -157,6 +157,7 @@ ggplot(county %>% filter(!is.na(median_edu))) +
 ```
 
 ```{r label-me-11}
+library(gridExtra)
 A<- ggplot(county,mapping=aes(homeownership,poverty))+
   geom_point()+
   labs(title = "Plot A")
