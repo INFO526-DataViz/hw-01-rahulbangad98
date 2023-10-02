@@ -60,23 +60,23 @@ Allows for simple comparisons, making it a useful tool for recognizing trends an
 library(openintro)
 data("nyc_marathon")  
 
+nyc_marathon = na.omit(nyc_marathon)
+nyc_marathon$time_hrs <- as.numeric(nyc_marathon$time_hrs)
+library(ggplot2)
+
+str(nyc_marathon)
+
+summary(nyc_marathon)
 valid_times <- nyc_marathon$time_hrs[!is.na(nyc_marathon$time_hrs)]
 time_range <- range(valid_times)
 
-# Histogram
-hist(nyc_marathon$time_hrs, 
-     main = "Distribution of Marathon Times", 
-     xlab = "Marathon Time (hours)", 
-     col = "red", 
-     breaks = 30)
+# Plotting histogram 
+ggplot(data = nyc_marathon, aes(x=time_hrs))+geom_histogram(binwidth = 0.01, fill="skyblue", color="blue")+labs(title = "Histogram of the distribution of marathon times", x="Marathon Time", y = "frequency")
 
 
-# Boxplot
-boxplot(nyc_marathon$time_hrs, 
-        main = "Distribution of Marathon Times", 
-        xlab = "All Runners", 
-        ylab = "Marathon Time (hours)", 
-        col = "yellow")
+# Plotting a box plot
+ggplot(data = nyc_marathon, aes(y=time_hrs))+geom_boxplot(fill="skyblue", color="blue")+labs(title = "Box plot of the distribution of marathon times", y = "marathon time")
+
 #question:What features of the distribution are apparent in the histogram and not the box plot? What features are apparent in the box plot but not in the histogram?
 #answer-->Box plots provide attention to data skewness, outliers, and summary statistics that are less obvious in histograms. 
 ```
