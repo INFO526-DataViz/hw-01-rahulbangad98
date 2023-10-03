@@ -1,7 +1,9 @@
 ---
 title: "HW 01"
 author: "Rahul Bangad"
-format: html
+format:
+  html:
+    embed-resources: TRUE
 toc: true
 ---
 
